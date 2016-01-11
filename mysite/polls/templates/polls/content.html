@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+		    {% if content_list %}
+		    <ul class="list-inline">
+		    {% for content in content_list %}
+		        <li><a href="{% url 'polls:page-content' content.slug %}">{{ content.title }}<img src="{{ MEDIA_URL }}{{ content.image.upload.url }}"/></a></li>
+		    {% endfor %}
+		    </ul>
+			{% else %}
+			    <p>No content are available.</p>
+			{% endif %}
+{% endblock %}

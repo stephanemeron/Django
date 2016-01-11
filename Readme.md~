@@ -1,0 +1,99 @@
+#DJANGO
+
+## Installation de django :
+
+	pip install Django
+
+	python -c "import django; print(django.get_version())"
+
+## Création du projet:
+Depuis un terminal en ligne de commande, déplacez-vous à l’aide de la commande cd dans un répertoire dans lequel vous souhaitez conserver votre code, puis lancez la commande suivante :
+
+	django-admin startproject lenomdemonprojet
+
+L'arborescence ressemble à ceci:
+
+	mysite/
+		manage.py
+		mysite/
+		    __init__.py
+		    settings.py
+		    urls.py
+		    wsgi.py
+
+## Lancement du serveur de DEV:
+
+	python manage.py runserver
+
+## Création de l'application pour le projet :
+
+	python manage.py startapp lenomdemonapplication
+
+## Les urls générales à la racine du projet : 
+
+	from django.conf.urls import include, url
+	from django.contrib import admin
+
+	urlpatterns = [
+		url(r'^polls/', include('polls.urls')),
+		url(r'^admin/', admin.site.urls),
+	] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+Elles appellent les urls dans chaques applications
+
+## Création du modèle models.py :
+Exemple de quelques champs:
+
+		from django.db import models
+		from django.utils import timezone 								# Pour les éléments de date
+
+		class Reporter(models.Model):
+			full_name = models.CharField(max_length=70) 				# max_length est obligatoire
+			created_at = models.DateTimeField(auto_now_add=True, default=timezone.now())
+			updated_at = models.DateTimeField(auto_now=True, default=timezone.now())
+			pub_date = models.DateField()
+			content = models.TextField() 								# pour les long texte
+			image = models.ForeignKey(Image,on_delete=models.CASCADE) 	# clé étrangère vers l'objet Image avec delete en cascade
+			slug = models.SlugField(unique=True) 						# Slugification de l'url de cet objet
+			image = models.ImageField(upload_to="images")
+			file = models.FileField(upload_to="files")
+
+			def __str__(self):              							# __unicode__ on Python 2 / Sert à déterminer comment retourner l'objet en standard en mode string(sans argument)
+				return self.nomduchamp
+
+
+## Création de la base de donnée :
+
+	python manage.py migrate
+
+## MAJ de la base de donnée :
+
+	python manage.py makemigrations polls
+
+## Gestion de l'admin admin.py :
+
+		from django.contrib import admin
+
+		from .models import les_modeles_dont_j_ai_besoin_dans_l_admin
+
+		list_display = ('title', 'slide_thumbnail',) 					# Pour gérer les listings dans l'admin
+
+		class ChoiceInline(admin.TabularInline): 
+			model = Choice 												# Nom du modèle qui doît être un Many2One
+			extra = 3 													# Pour faire apparaitre 3 champs à remplir plus un bouton pour en ajouter d'autre
+
+		class ReporterAdmin(admin.ModelAdmin): 
+			fieldsets = [
+					(None,{'fields': ['question_text']}),				# Présentation des champs dans la vue détail, dans ce cas là, le champ n'a pas de libellé spécifique
+					('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}) # Ici, le champ est caché (collapse)
+				]
+			prepopulated_fields = {"slug": ("title",)} 					# pour créer automatiquement un slug
+			inlines = [ChoiceInline] 									# pour faire apparaitre les 3 objets 'Choices' à remplir + 1 bouton add new
+
+		admin.site.register(modeles, les class de ce fichier qui se termine par Admin)
+
+
+## Gestion des vues :
+A faire
+
+## Gestion des formulaires
