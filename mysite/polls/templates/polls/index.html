@@ -12,6 +12,15 @@
 	    <p>No polls are available.</p>
 	{% endif %}
 	</div>
+	<div class="col-md-offset-3 col-md-6">
+    {% if latest_question_list %}
+    dddddddddddddddddddddddddddddddddddd
+    {% for content in latest_question_list.content %}
+		{{ content|safe }}
+	ssssssssssssssssssssssssssssssssssssss
+	{% endfor %}
+	{% endif %}
+	</div>
 {% endblock %}
 {% if latest_question_list %}
 {% block video %}
@@ -23,3 +32,9 @@
 	{% endfor %}
 {% endblock %}
 {% endif %}
+{% block footer %}
+<!-- {{ latest_question_list.contact_form }} -->
+	{% for form in latest_question_list.contact_form %}
+		{{ form|safe }}
+	{% endfor %}
+{% endblock %}
