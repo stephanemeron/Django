@@ -43,8 +43,8 @@ class Image(models.Model):
 class Content(models.Model):
 	title = models.CharField(max_length=200)
 	resume = models.CharField(max_length = 500)
-	text = models.TextField()
-	image = models.ForeignKey(Image)
+	text = models.TextField(blank=True)
+	image = models.ForeignKey(Image, blank=True, null=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 	slug = models.SlugField(unique=True)
