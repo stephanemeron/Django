@@ -12,11 +12,9 @@ class ContactForm(forms.Form):
 	contact_message = forms.CharField(label='Votre message', required=True, widget=forms.Textarea)
 	cc_myself = forms.BooleanField(label='Me mettre en copie',required=False)
 
-	# def __init__(self, *args, **kwargs):
-	# 	super(ContactForm, self).__init__(*args, **kwargs)
-	# 	for items in self.fields:
-	# 		print items
-	# 	for field_name, field in self.fields.items():
-	# 		# print field
-	# 		# print field_name
-	# 		field.widget.attrs['class'] = 'form-control'
+	def __init__(self, *args, **kwargs):
+		super(ContactForm, self).__init__(*args, **kwargs)
+		for field_name, field in self.fields.items():
+			# print field
+			# print field_name
+			field.widget.attrs['class'] = 'form-control'
